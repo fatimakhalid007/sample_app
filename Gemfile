@@ -39,6 +39,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
   # Uncomment these lines on Linux.
   gem 'libnotify', '0.8.0'
 
+  gem 'bootstrap-sass'
+
+  gem 'sprockets'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
