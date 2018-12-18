@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
+#see section 5.6 to write more test in concise form
 describe "Static pages" do
 
      subject{page}
