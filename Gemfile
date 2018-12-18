@@ -9,6 +9,7 @@ group :development, :test do
   gem 'sqlite3'#, '1.3.8'
   gem 'rspec-rails'#, '2.13.1'
   gem 'test-unit'
+  gem 'guard-rspec'
 end
 
 group :test do
@@ -34,6 +35,9 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
+
+  # Uncomment these lines on Linux.
+  gem 'libnotify', '0.8.0'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
