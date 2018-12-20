@@ -15,6 +15,7 @@ end
 
 group :test do
   gem 'selenium-webdriver', '2.35.1'
+  gem 'factory_girl_rails'
 end
 
 gem 'rake', '< 11.0'

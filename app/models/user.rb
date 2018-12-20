@@ -16,8 +16,4 @@ validates :password, length: { minimum: 6 }
 
 has_secure_password
 
-def fatima
-	"fatima"
-end
-
 end
