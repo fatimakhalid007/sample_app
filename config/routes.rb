@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
 
   
+   # devise_for :users, only: []
   root 'static_pages#home'
 
   #get 'users/new'
@@ -34,7 +35,6 @@ Rails.application.routes.draw do
   
   match '/signout', to: 'sessions#destroy',     via: 'delete'
   #root 'application#hello'
-
 
  
 
