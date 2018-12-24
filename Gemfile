@@ -18,6 +18,9 @@ group :test do
   gem 'factory_girl_rails'
   gem 'cucumber-rails',:require => false
   gem 'database_cleaner', github: 'bmabey/database_cleaner'
+  gem 'rspec-core'
+  gem 'rspec-rails'
+  gem 'capybara'
 end
 
 gem 'rake', '< 11.0'
@@ -47,6 +50,15 @@ gem 'sdoc', '~> 0.4.0', group: :doc
   gem 'sprockets'
 
   gem 'bcrypt-ruby'
+
+  gem 'faker'
+
+gem 'will_paginate'
+
+gem 'bootstrap-will_paginate'
+
+
+# gem 'devise'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
