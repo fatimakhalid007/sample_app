@@ -4,7 +4,7 @@ describe "Authentication" do
 
   		subject { page }
 
-  	describe "signin page" do
+  	describe "signin page",type: :feature do
     	before { visit signin_path }
 
     	it { should have_content('Sign in') }
@@ -61,6 +61,20 @@ describe "Authentication" do
           specify { expect(response).to redirect_to(signin_path) }
         end
       end
+      #added now
+        describe "in the Microposts controller" do
+
+        describe "submitting to the create action" do
+          before { post microposts_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete micropost_path(FactoryGirl.create(:micropost)) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
+      #end of addition
     end
     describe "as wrong user" do
       let(:user) { FactoryGirl.create(:user) }

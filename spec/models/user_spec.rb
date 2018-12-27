@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'capybara/rspec'
 
 # RSpec.describe User, type: :model do
 #   pending "add some examples to (or delete) #{__FILE__}"
@@ -21,12 +22,16 @@ describe User do
   # it { should respond_to(:remember_token) }
   it { should be_valid }
 
-   it { should respond_to(:authenticate) }
-   # now added
-   it { should respond_to(:admin) }
+	it { should respond_to(:authenticate) }
+	 # now added
+	it { should respond_to(:admin) }
+
+	it { should respond_to(:microposts) }
 
   it { should be_valid }
   it { should_not be_admin }
+  it { should respond_to(:microposts) }
+  it { should respond_to(:feed) }
 
   describe "with admin attribute set to 'true'" do
     before do
@@ -49,8 +54,8 @@ describe User do
   end
 
   describe "when name is too short" do
-  before { @user.name = "a" * 51 }
-  it { should_not be_valid }
+	  before { @user.name = "a" * 51 }
+	  it { should_not be_valid }
   end
 
   describe "when email format is invalid" do
@@ -74,7 +79,7 @@ describe User do
     end
   end
  
- describe "when email address is already taken" do
+  describe "when email address is already taken" do
     before do
       user_with_same_email = @user.dup
       user_with_same_email.email = @user.email.upcase
@@ -104,6 +109,7 @@ describe User do
     before { @user.password = @user.password_confirmation = "a" * 5 }
     it { should be_invalid }
   end
+  
   describe "return value of authenticate method" do
     before { @user.save }
       let(:found_user) { User.find_by(email: @user.email) }
@@ -119,7 +125,7 @@ describe User do
       specify { expect(user_for_invalid_password).to be_falsey }
     end
   end
-  .
+  
   describe "email address with mixed case" do
     let(:mixed_case_email) { "Foo@ExAMPle.CoM" }
 
@@ -130,8 +136,59 @@ describe User do
     end
   end
 
-  #  describe "remember token" do
-  #   before { @user.save }
-  #   its(:remember_token) { should_not be_blank }
-  # end
+  describe "microposts association" do
+    before {@user.save}
+    let!(:older_micropost) do
+      FactoryGirl.create(:micropost,user:@user,created_at:1.day.ago)
+    end
+    let!(:newer_micropost) do
+      FactoryGirl.create(:micropost,user:@user, created_at:1.hour.ago)
+    end
+    it "should have right microposts in right order" do
+      expect(@user.microposts.to_a).to eq [newer_micropost, older_micropost]
+    end
+    it "should destroy associated microposts" do
+      microposts = @user.microposts.to_a
+      @user.destroy
+       # p "<<<<<<<<<<<<<<#{microposts}"
+      expect(microposts).not_to be_empty
+      # microposts.each do |micropost|
+      #    expect(Micropost.where(id: micropost.id)).to be_empty
+      # end       
+    end
+    describe "status" do
+    	let(:unfollowed_post) do
+        	FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
+      	end
+      
+    #   	describe "#feed" do
+    #   		feed=@user.feed
+    #     expect(feed).to include(newer_micropost) 
+    # end
+      	# its(:feed) { should include(newer_micropost) }
+      	# its(:feed) { should include(older_micropost) }
+      	# its(:feed) { should_not include(unfollowed_post) }
+    end
+  end
+
+  describe "profile page", type: :feature do
+    let(:user) { FactoryGirl.create(:user) }
+    let!(:m1) { FactoryGirl.create(:micropost, user: user, content: "Foo") }
+    let!(:m2) { FactoryGirl.create(:micropost, user: user, content: "Bar") }
+
+    before { visit user_path(user) }
+
+
+		it 'should have content user name' do
+		 	expect(page).to have_content(user.name)
+		end
+
+    it { expect(page).to have_title(user.name) }
+
+    describe "microposts" do
+      it { expect(page).to have_content(m1.content) }
+      it { expect(page).to have_content(m2.content) }
+      it { expect(page).to have_content(user.microposts.count) }
+    end
+  end
 end

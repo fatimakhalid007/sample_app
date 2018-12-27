@@ -6,7 +6,8 @@ class UsersController < ApplicationController
 	def show
 		# if User.exists?(:id)
     @user = User.find(params[:id])
-  end
+    @microposts = @user.microposts.paginate(page: params[:page])
+ 	end
 
 	def new
 		@user=User.new
@@ -15,11 +16,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)    # Not the final implementation!
     	if @user.save
-      		sign_in @user
-      		flash[:success] = "Welcome to the Sample App!"
-      		redirect_to @user
+      	sign_in @user
+      	flash[:success] = "Welcome to the Sample App!"
+      	redirect_to @user
     	else
-      		render 'new'
+      	render 'new'
     	end
   end
 
@@ -30,24 +31,24 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
-       if @user.update_attributes(user_params)
-      flash[:success] = "Profile updated"
-      redirect_to @user
-    else
-      render 'edit'
-    end
-  end
-end
+      if @user.update_attributes(user_params)
+      	flash[:success] = "Profile updated"
+      	redirect_to @user
+    	else
+      	render 'edit'
+    	end
+  	end
+	end
   def index
     # @users = User.all
-      @users = User.paginate(page: params[:page])
+    @users = User.paginate(page: params[:page])
 
   end
-   def destroy
-      User.find(params[:id]).destroy
-      flash[:success] = "User deleted."
-      redirect_to users_url
-    end
+  def destroy
+    User.find(params[:id]).destroy
+    flash[:success] = "User deleted."
+    redirect_to users_url
+  end
   	
   private
 
@@ -56,7 +57,7 @@ end
                                    :password_confirmation)
     end
     # Before filters
-     def signed_in_user
+    def signed_in_user
       unless signed_in?
         store_location
         redirect_to signin_url, notice: "Please sign in."

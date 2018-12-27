@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
-
+  resources :microposts, only: [:create, :destroy]
+  
   
    # devise_for :users, only: []
   root 'static_pages#home'
