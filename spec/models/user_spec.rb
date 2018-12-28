@@ -32,6 +32,13 @@ describe User do
   it { should_not be_admin }
   it { should respond_to(:microposts) }
   it { should respond_to(:feed) }
+  it { should respond_to(:relationships) }
+  it { should respond_to(:followed_users) }
+  it { should respond_to(:following?) }
+  it { should respond_to(:follow!) }
+  it { should respond_to(:reverse_relationships) }
+  it { should respond_to(:followers) }
+ 
 
   describe "with admin attribute set to 'true'" do
     before do
@@ -189,6 +196,25 @@ describe User do
       it { expect(page).to have_content(m1.content) }
       it { expect(page).to have_content(m2.content) }
       it { expect(page).to have_content(user.microposts.count) }
+    end
+  end
+
+  describe "following" do
+    let(:other_user) { FactoryGirl.create(:user) }
+    before do
+      @user.save
+      @user.follow!(other_user)
+    end
+
+    it { should be_following(other_user) }
+    # its(:followed_users) { should include(other_user) }
+
+    it { should be_following(other_user) }
+    # its(:followed_users) { should include(other_user) }
+
+    describe "followed user" do
+      subject { other_user }
+      # its(:followers) { should include(@user) }
     end
   end
 end

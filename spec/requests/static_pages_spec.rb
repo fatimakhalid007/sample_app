@@ -8,11 +8,11 @@ describe "Static pages" do
 
   describe "Home page" do
      
-     before {visit root_path}
+    before {visit root_path}
 
     it {"should have the content 'Sample App'" }
     it {"should have the title 'Ruby on Rails Tutorial Sample App | Home'"}
-       describe "for signed-in users" do
+    describe "for signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
       before do
         FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
@@ -26,8 +26,18 @@ describe "Static pages" do
           expect(page).to have_selector("li##{item.id}", text: item.content)
         end
       end
-    end
-     
+      describe "follower/following counts" do
+        let(:other_user) { FactoryGirl.create(:user) }
+        before do
+          other_user.follow!(user)
+          visit root_path
+        end
+
+        it { should have_link("0 following", href: following_user_path(user)) }
+        it { should have_link("1 followers", href: followers_user_path(user)) }
+      end
+      
+    end 
   end
 
   describe "Help page" do

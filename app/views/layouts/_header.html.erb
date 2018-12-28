@@ -10,7 +10,7 @@
           <ul class="nav pull-right">
           <% if signed_in? %>
             <li><%= link_to "Users", '/users' %></li>
-            <li id="fat-menu" class="dropdown">
+            <ul><li id="fat-menu" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 Account <b class="caret"></b>
               </a>
@@ -20,7 +20,7 @@
                 <li class="divider"></li>
                 <li>
                   <%= link_to "Sign out", signout_path, method: "delete" %>
-                </li>
+                </li></ul>
               </ul>
             </li>
           <% else %>
